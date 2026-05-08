@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "0.0.0.0:8000:8000"
+      - "8000:8000"
+    volumes:
+      - .:/srv/app
     command: python manage.py runserver 0.0.0.0:8000
-volumes:
-  static-data:

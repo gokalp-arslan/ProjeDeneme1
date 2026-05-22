@@ -82,46 +82,32 @@ def portfoy_verilerini_getir():
 
 def index(request):
     yorum_form = YorumForm()
-    mesaj_form = IletisimMesajForm()
 
-    if request.method == 'POST':
-        form_tipi = request.POST.get('form_tipi')
-
-        if form_tipi == 'yorum':
-            yorum_form = YorumForm(request.POST)
-            if yorum_form.is_valid():
-                yorum = yorum_form.save(commit=False)
-                yorum.onaylandi = False
-                yorum.save()
-                messages.success(
-                    request,
-                    'Yorumunuz alındı. Onaylandıktan sonra sitede yayınlanacaktır.',
-                )
-                return redirect(reverse('index') + '#testimonials')
-            messages.error(request, 'Yorum gönderilemedi. Lütfen alanları kontrol edin.')
-
-        elif form_tipi == 'mesaj':
-            mesaj_form = IletisimMesajForm(request.POST)
-            if mesaj_form.is_valid():
-                mesaj_form.save()
-                messages.success(
-                    request,
-                    'Mesajınız başarıyla gönderildi. En kısa sürede dönüş yapacağım.',
-                )
-                return redirect(reverse('index') + '#contact')
-            messages.error(request, 'Mesaj gönderilemedi. Lütfen alanları kontrol edin.')
+    if request.method == 'POST' and request.POST.get('form_tipi') == 'yorum':
+        yorum_form = YorumForm(request.POST)
+        if yorum_form.is_valid():
+            yorum = yorum_form.save(commit=False)
+            yorum.onaylandi = False
+            yorum.save()
+            messages.success(
+                request,
+                'Yorumunuz alındı. Onaylandıktan sonra sitede yayınlanacaktır.',
+            )
+            return redirect(reverse('index') + '#testimonials')
+        messages.error(request, 'Yorum gönderilemedi. Lütfen alanları kontrol edin.')
 
     context = {
         **ortak_site_context(),
         **portfoy_verilerini_getir(),
         'yorum_form': yorum_form,
-        'mesaj_form': mesaj_form,
     }
     return render(request, 'index.html', context)
 
 
 def contact(request):
-    """Tek sayfa deneyimi: iletişim bölümüne yönlendir."""
+    mesaj_form = IletisimMesajForm()
+    veriler = portfoy_verilerini_getir()
+
     if request.method == 'POST':
         mesaj_form = IletisimMesajForm(request.POST)
         if mesaj_form.is_valid():
@@ -130,6 +116,15 @@ def contact(request):
                 request,
                 'Mesajınız başarıyla gönderildi. En kısa sürede dönüş yapacağım.',
             )
-        else:
-            messages.error(request, 'Mesaj gönderilemedi. Lütfen alanları kontrol edin.')
-    return redirect(reverse('index') + '#contact')
+            return redirect('contact')
+        messages.error(request, 'Mesaj gönderilemedi. Lütfen alanları kontrol edin.')
+
+    context = {
+        **ortak_site_context(),
+        'title': 'İletişim',
+        'iletisim': veriler['iletisim'],
+        'hakkimda': veriler['hakkimda'],
+        'sosyal_medya': veriler['sosyal_medya'],
+        'mesaj_form': mesaj_form,
+    }
+    return render(request, 'contact.html', context)

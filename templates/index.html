@@ -22,7 +22,7 @@
                 <span class="typed" data-typed-items="{{ hero.universite }}, {{ hero.bolum }}{% if hakkimda %}, {{ hakkimda.unvan }}{% endif %}"></span>
               </h2>
               {% else %}
-              <h1>CV </h1>
+              <h1>CV PORTFÖYÜM </h1>
               <h2><span class="typed" data-typed-items="Üniversite, Bölüm, Unvan"></span></h2>
               {% endif %}
 
@@ -39,7 +39,7 @@
               <div class="hero-actions" data-aos="fade-up" data-aos-delay="200">
                 <a href="#about" class="btn btn-primary">Hakkımda</a>
                 <a href="#portfolio" class="btn btn-outline">Portföy</a>
-                <a href="#contact" class="btn btn-outline">İletişim</a>
+                <a href="{% url 'contact' %}" class="btn btn-outline">İletişim</a>
               </div>
 
               {% if sosyal_medya %}
@@ -154,7 +154,7 @@
                 <i class="bi bi-download"></i> CV İndir
               </a>
               {% endif %}
-              <a href="#contact" class="btn btn-outline">İletişime Geç</a>
+              <a href="{% url 'contact' %}" class="btn btn-outline">İletişime Geç</a>
             </div>
           </div>
         </div>
@@ -446,68 +446,6 @@
                 <div class="col-12">{{ yorum_form.yorum_metni.label_tag }}{{ yorum_form.yorum_metni }}</div>
                 <div class="col-12 text-center">
                   <button type="submit" class="btn btn-primary px-4">Yorumu Gönder</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {# ——— 9. İLETİŞİM — admin: IletisimBilgisi + mesaj formu ——— #}
-  <section id="contact" class="contact section light-background">
-    <div class="container section-title" data-aos="fade-up">
-      <h2>İletişim</h2>
-      <p>Benimle iletişime geçin</p>
-    </div>
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-      <div class="row gy-5">
-        <div class="col-lg-5">
-          {% if iletisim %}
-          <div class="info-box">
-            <h3>İletişim Bilgilerim</h3>
-            <p>Aşağıdaki kanallardan bana ulaşabilirsiniz.</p>
-            <div class="info-item">
-              <div class="icon-box"><i class="bi bi-geo-alt"></i></div>
-              <div class="content"><h4>Adres</h4><p>{{ iletisim.adres }}</p></div>
-            </div>
-            <div class="info-item">
-              <div class="icon-box"><i class="bi bi-envelope"></i></div>
-              <div class="content"><h4>E-posta</h4><p><a href="mailto:{{ iletisim.eposta }}">{{ iletisim.eposta }}</a></p></div>
-            </div>
-            <div class="info-item">
-              <div class="icon-box"><i class="bi bi-telephone"></i></div>
-              <div class="content"><h4>Telefon</h4><p><a href="tel:{{ iletisim.telefon }}">{{ iletisim.telefon }}</a></p></div>
-            </div>
-          </div>
-          {% elif hakkimda %}
-          <div class="info-box">
-            <h3>İletişim</h3>
-            <div class="info-item">
-              <div class="icon-box"><i class="bi bi-envelope"></i></div>
-              <div class="content"><h4>E-posta</h4><p><a href="mailto:{{ hakkimda.eposta }}">{{ hakkimda.eposta }}</a></p></div>
-            </div>
-            <div class="info-item">
-              <div class="icon-box"><i class="bi bi-telephone"></i></div>
-              <div class="content"><h4>Telefon</h4><p><a href="tel:{{ hakkimda.telefon }}">{{ hakkimda.telefon }}</a></p></div>
-            </div>
-          </div>
-          {% endif %}
-        </div>
-        <div class="col-lg-7">
-          <div class="contact-form">
-            <h3>Mesaj Gönderin</h3>
-            <form method="post" action="{% url 'index' %}#contact">
-              {% csrf_token %}
-              <input type="hidden" name="form_tipi" value="mesaj">
-              <div class="row gy-3">
-                <div class="col-md-6">{{ mesaj_form.ad_soyad.label_tag }}{{ mesaj_form.ad_soyad }}</div>
-                <div class="col-md-6">{{ mesaj_form.eposta.label_tag }}{{ mesaj_form.eposta }}</div>
-                <div class="col-12">{{ mesaj_form.konu.label_tag }}{{ mesaj_form.konu }}</div>
-                <div class="col-12">{{ mesaj_form.mesaj.label_tag }}{{ mesaj_form.mesaj }}</div>
-                <div class="col-12 text-center">
-                  <button type="submit" class="btn"><i class="bi bi-send"></i> Mesaj Gönder</button>
                 </div>
               </div>
             </form>

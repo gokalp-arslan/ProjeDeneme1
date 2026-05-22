@@ -1,0 +1,108 @@
+{# İletişim bölümü — admin: IletisimBilgisi + GelenMesaj formu #}
+<section id="contact" class="contact section light-background">
+  <div class="container section-title" data-aos="fade-up">
+    <h2>İletişim</h2>
+    <p>Benimle iletişime geçin</p>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row gy-5">
+
+      <div class="col-lg-5">
+        {% if iletisim %}
+        <div class="info-box">
+          <h3>İletişim Bilgilerim</h3>
+          <p>Aşağıdaki kanallardan bana ulaşabilirsiniz.</p>
+
+          <div class="info-item" data-aos="fade-up" data-aos-delay="150">
+            <div class="icon-box"><i class="bi bi-geo-alt"></i></div>
+            <div class="content">
+              <h4>Adres</h4>
+              <p>{{ iletisim.adres }}</p>
+              {% if iletisim.harita_linki %}
+              <p><a href="{{ iletisim.harita_linki }}" target="_blank" rel="noopener">Haritada Gör</a></p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="info-item" data-aos="fade-up" data-aos-delay="200">
+            <div class="icon-box"><i class="bi bi-envelope"></i></div>
+            <div class="content">
+              <h4>E-posta</h4>
+              <p><a href="mailto:{{ iletisim.eposta }}">{{ iletisim.eposta }}</a></p>
+            </div>
+          </div>
+
+          <div class="info-item" data-aos="fade-up" data-aos-delay="250">
+            <div class="icon-box"><i class="bi bi-telephone"></i></div>
+            <div class="content">
+              <h4>Telefon</h4>
+              <p><a href="tel:{{ iletisim.telefon }}">{{ iletisim.telefon }}</a></p>
+            </div>
+          </div>
+
+          {% if sosyal_medya %}
+          <div class="social-links mt-4 d-flex gap-2 flex-wrap">
+            {% for link in sosyal_medya %}
+            <a href="{{ link.url }}" target="_blank" rel="noopener" title="{{ link.platform_adi }}" class="social-pill">
+              <i class="{{ link.ikon_sinifi }}"></i> {{ link.platform_adi }}
+            </a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% elif hakkimda %}
+        <div class="info-box">
+          <h3>İletişim</h3>
+          <div class="info-item">
+            <div class="icon-box"><i class="bi bi-envelope"></i></div>
+            <div class="content">
+              <h4>E-posta</h4>
+              <p><a href="mailto:{{ hakkimda.eposta }}">{{ hakkimda.eposta }}</a></p>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="icon-box"><i class="bi bi-telephone"></i></div>
+            <div class="content">
+              <h4>Telefon</h4>
+              <p><a href="tel:{{ hakkimda.telefon }}">{{ hakkimda.telefon }}</a></p>
+            </div>
+          </div>
+          {% if hakkimda.adres %}
+          <div class="info-item">
+            <div class="icon-box"><i class="bi bi-geo-alt"></i></div>
+            <div class="content">
+              <h4>Adres</h4>
+              <p>{{ hakkimda.adres }}</p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        {% else %}
+        <div class="alert alert-secondary">Admin → İletişim Bilgisi ekleyin.</div>
+        {% endif %}
+      </div>
+
+      <div class="col-lg-7">
+        <div class="contact-form" data-aos="fade-up" data-aos-delay="200">
+          <h3>Mesaj Gönderin</h3>
+          <p>Formu doldurarak bana mesaj iletebilirsiniz.</p>
+          <form method="post" action="{% url 'index' %}#contact">
+            {% csrf_token %}
+            <input type="hidden" name="form_tipi" value="mesaj">
+            <div class="row gy-3">
+              <div class="col-md-6">{{ mesaj_form.ad_soyad.label_tag }}{{ mesaj_form.ad_soyad }}</div>
+              <div class="col-md-6">{{ mesaj_form.eposta.label_tag }}{{ mesaj_form.eposta }}</div>
+              <div class="col-12">{{ mesaj_form.konu.label_tag }}{{ mesaj_form.konu }}</div>
+              <div class="col-12">{{ mesaj_form.mesaj.label_tag }}{{ mesaj_form.mesaj }}</div>
+              <div class="col-12 text-center">
+                <button type="submit" class="btn"><i class="bi bi-send"></i> Mesaj Gönder</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  {% include 'includes/head.html' with title=title %}
+</head>
+
+<body class="index-page">
+
+  {% include 'includes/navbar.html' %}
+
+  {% if messages %}
+  <div class="alert-floating">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow mb-2" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Kapat"></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% block content %}
+
+  {% endblock %}
+
+  <footer id="footer" class="footer position-relative light-background">
+    <div class="container">
+      <div class="copyright text-center ">
+        <p>{{ about_myself_footer|default:"&copy; Copyright <strong>iPortfolio</strong> All Rights Reserved"|safe }}</p>
+      </div>
+      <div class="credits text-center">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-serif-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+  <script>
+    /* JS yüklenmese bile preloader takılmasın */
+    function hidePreloader() {
+      var el = document.getElementById('preloader');
+      if (el) el.remove();
+    }
+    window.addEventListener('load', hidePreloader);
+    setTimeout(hidePreloader, 2500);
+  </script>
+
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/typed.js/typed.umd.js' %}"></script>
+  <script src="{% static 'vendor/waypoints/noframework.waypoints.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+  {% block extra_scripts %}
+
+  {% endblock %}
+
+</body>
+</html>

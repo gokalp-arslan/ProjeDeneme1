@@ -1,72 +1,462 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gökalp Arslan | Ana Sayfa</title>
+{% extends 'layout.html' %}
+{% load static %}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+{% block content %}
+<main class="main">
 
-    <style>
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-        }
-    </style>
-</head>
-<body class="bg-light">
+  {# ——— 1. GİRİŞ (Hero) — admin: GirisBolumu ——— #}
+  <section id="hero" class="hero section">
+    <div class="background-elements">
+      <div class="bg-circle circle-1"></div>
+      <div class="bg-circle circle-2"></div>
+      <div class="bg-circle circle-3"></div>
+    </div>
+    <div class="container" data-aos="fade-up">
+      <div class="row align-items-center min-vh-100 py-5">
+        <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+          <div class="hero-content">
+            <div class="hero-text">
+              {% if hero %}
+              <h1>Merhaba, Ben <span class="accent-text">{{ hero.ad }}</span> {{ hero.soyad }}</h1>
+              <h2 class="lead typed-wrap">
+                <span class="typed" data-typed-items="{{ hero.universite }}, {{ hero.bolum }}{% if hakkimda %}, {{ hakkimda.unvan }}{% endif %}"></span>
+              </h2>
+              {% else %}
+              <h1>CV Portföyüm</h1>
+              <h2><span class="typed" data-typed-items="Üniversite, Bölüm, Unvan"></span></h2>
+              {% endif %}
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="/">GÖKALP ARSLAN</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="/">Ana Sayfa</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/contact/">İletişim</a>
-            </li>
-          </ul>
+              <p class="description mt-3">
+                {% if hero and hero.kisa_aciklama %}
+                  {{ hero.kisa_aciklama|linebreaksbr }}
+                {% elif ozgecmis and ozgecmis.profesyonel_ozet %}
+                  {{ ozgecmis.profesyonel_ozet|linebreaksbr }}
+                {% elif hakkimda and hakkimda.onyazi %}
+                  {{ hakkimda.onyazi|linebreaksbr }}
+                {% endif %}
+              </p>
+
+              <div class="hero-actions" data-aos="fade-up" data-aos-delay="200">
+                <a href="#about" class="btn btn-primary">Hakkımda</a>
+                <a href="#portfolio" class="btn btn-outline">Portföy</a>
+                <a href="#contact" class="btn btn-outline">İletişim</a>
+              </div>
+
+              {% if sosyal_medya %}
+              <div class="social-links" data-aos="fade-up" data-aos-delay="300">
+                {% for link in sosyal_medya %}
+                <a href="{{ link.url }}" target="_blank" rel="noopener" title="{{ link.platform_adi }}">
+                  <i class="{{ link.ikon_sinifi }}"></i>
+                </a>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+          <div class="hero-visual">
+            <div class="profile-container">
+              <div class="profile-background"></div>
+              {% if hero and hero.profil_fotografi %}
+              <img src="{{ hero.profil_fotografi.url }}" alt="{{ hero.tam_ad }}" class="profile-image">
+              {% elif hakkimda and hakkimda.profil_fotografi %}
+              <img src="{{ hakkimda.profil_fotografi.url }}" alt="{% if hero %}{{ hero.tam_ad }}{% else %}Profil{% endif %}" class="profile-image">
+              {% elif ozgecmis and ozgecmis.profil_fotografi %}
+              <img src="{{ ozgecmis.profil_fotografi.url }}" alt="Profil" class="profile-image">
+              {% else %}
+              <div class="profile-image profile-placeholder" aria-hidden="true">
+                {% if hero %}{{ hero.ad|slice:":1" }}{{ hero.soyad|slice:":1" }}{% else %}CV{% endif %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
         </div>
       </div>
-    </nav>
-
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
-                    <h1 class="display-4 fw-bold">Merhaba, Ben Gökalp!</h1>
-                    <p class="lead mt-3">Bu benim ikinci denemem. </p>
-                    <hr class="my-4">
-                    <p>Django öğrenme serisi başlangıcım</p>
-                    <a class="btn btn-primary btn-lg" href="/contact/" role="button">İletişim için tıkla</a>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="card shadow-sm border-0">
-                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=600&auto=format&fit=crop" class="card-img-top" alt="Kodlama">
-                    <div class="card-body text-center">
-                        <h5 class="card-title fw-bold">Yazılım Geliştirici</h5>
-                        <p class="card-text text-muted">Django ve Docker öğreniyorum.</p>
-                        <div class="d-grid shadow-sm">
-                            <span class="badge bg-info text-dark p-2 mb-2">Django</span>
-                            <span class="badge bg-secondary p-2">Docker </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+  </section>
 
-    <footer class="text-center py-4 mt-5 bg-white border-top">
-        <p class="text-muted mb-0">&copy; 2026 Gökalp Arslan - Tüm Hakları Saklıdır.</p>
-    </footer>
+  {# ——— 2. HAKKIMDA — admin: Hakkimda ——— #}
+  {% if hakkimda %}
+  <section id="about" class="about section light-background">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-5 align-items-center">
+        <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
+          <div class="profile-card">
+            <div class="profile-header">
+              <div class="profile-image">
+                {% if hakkimda.profil_fotografi %}
+                <img src="{{ hakkimda.profil_fotografi.url }}" alt="{{ hakkimda.unvan }}">
+                {% else %}
+                <div class="profile-placeholder">
+                  {% if hero %}{{ hero.ad|slice:":1" }}{{ hero.soyad|slice:":1" }}{% else %}?{% endif %}
+                </div>
+                {% endif %}
+              </div>
+              <div class="profile-badge"><i class="bi bi-patch-check-fill"></i></div>
+            </div>
+            <div class="profile-content">
+              <h3>{% if hero %}{{ hero.tam_ad }}{% else %}{{ hakkimda.unvan }}{% endif %}</h3>
+              <p class="profession">{{ hakkimda.unvan }}</p>
+              {% if hero %}
+              <p class="small text-muted mb-3">{{ hero.universite }} · {{ hero.bolum }}</p>
+              {% endif %}
+              <div class="contact-links">
+                <a href="mailto:{{ hakkimda.eposta }}" class="contact-item">
+                  <i class="bi bi-envelope"></i><span>{{ hakkimda.eposta }}</span>
+                </a>
+                <a href="tel:{{ hakkimda.telefon }}" class="contact-item">
+                  <i class="bi bi-telephone"></i><span>{{ hakkimda.telefon }}</span>
+                </a>
+                {% if hakkimda.adres %}
+                <div class="contact-item">
+                  <i class="bi bi-geo-alt"></i><span>{{ hakkimda.adres }}</span>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
+          <div class="about-content">
+            <div class="section-header">
+              <span class="badge-text">Hakkımda</span>
+              <h2>{% if hero %}Merhaba, Ben {{ hero.ad }}{% else %}Hakkımda{% endif %}</h2>
+            </div>
+            <div class="description"><p>{{ hakkimda.onyazi|linebreaksbr }}</p></div>
+            <div class="details-grid">
+              <div class="detail-row">
+                <div class="detail-item">
+                  <span class="detail-label">İlerlediğim Alanlar</span>
+                  <span class="detail-value">{{ hakkimda.ilerledigi_alanlar }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Deneyim Seviyesi</span>
+                  <span class="detail-value">{{ hakkimda.deneyim_seviyesi }}</span>
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-item">
+                  <span class="detail-label">Eğitim</span>
+                  <span class="detail-value">{{ hakkimda.egitim_bilgileri|linebreaksbr }}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Diller</span>
+                  <span class="detail-value">{{ hakkimda.diller }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="cta-section">
+              {% if hakkimda.cv_dosyasi %}
+              <a href="{{ hakkimda.cv_dosyasi.url }}" class="btn btn-primary" target="_blank" rel="noopener">
+                <i class="bi bi-download"></i> CV İndir
+              </a>
+              {% endif %}
+              <a href="#contact" class="btn btn-outline">İletişime Geç</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {# ——— 3. İSTATİSTİKLER — admin: SayisalIstatistik ——— #}
+  {% if istatistik %}
+  <section id="stats" class="stats section">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title text-center">
+        <h2>İstatistikler</h2>
+        <p>Rakamlarla özet</p>
+      </div>
+      <div class="stats-wrapper">
+        <div class="stats-item" data-aos="zoom-in" data-aos-delay="100">
+          <div class="icon-wrapper"><i class="bi bi-folder-check"></i></div>
+          <span data-purecounter-start="0" data-purecounter-end="{{ istatistik.proje_sayisi }}" data-purecounter-duration="1.2" class="purecounter"></span>
+          <p>Proje</p>
+        </div>
+        <div class="stats-item" data-aos="zoom-in" data-aos-delay="200">
+          <div class="icon-wrapper"><i class="bi bi-building"></i></div>
+          <span data-purecounter-start="0" data-purecounter-end="{{ istatistik.is_yeri_sayisi }}" data-purecounter-duration="1.2" class="purecounter"></span>
+          <p>İş Yeri</p>
+        </div>
+        <div class="stats-item" data-aos="zoom-in" data-aos-delay="300">
+          <div class="icon-wrapper"><i class="bi bi-journal-text"></i></div>
+          <span data-purecounter-start="0" data-purecounter-end="{{ istatistik.arastirma_raporu_sayisi }}" data-purecounter-duration="1.2" class="purecounter"></span>
+          <p>Araştırma Raporu</p>
+        </div>
+        <div class="stats-item" data-aos="zoom-in" data-aos-delay="400">
+          <div class="icon-wrapper"><i class="bi bi-award"></i></div>
+          <span data-purecounter-start="0" data-purecounter-end="{{ istatistik.sertifika_sayisi }}" data-purecounter-duration="1.2" class="purecounter"></span>
+          <p>Sertifika</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {# ——— 4. YETENEKLER — admin: Yetenek ——— #}
+  {% if yetenekler %}
+  <section id="skills" class="skills section light-background">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Yetenekler</h2>
+        <p>Teknik beceri seviyelerim</p>
+      </div>
+      <div class="row skills-content skills-animation">
+        <div class="col-lg-12">
+          <div class="skills-category">
+            <h3>Teknik Yetenekler</h3>
+            <div class="row">
+              {% for yetenek in yetenekler %}
+              <div class="col-md-6">
+                <div class="skill-item">
+                  <h4>{{ yetenek.ad }} <span class="skill-percentage">{{ yetenek.yuzde }}%</span></h4>
+                  <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ yetenek.yuzde }}" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {# ——— 5. ÖZGEÇMİŞ — admin: OzgecmisProfili + ilişkili kayıtlar ——— #}
+  {% if ozgecmis %}
+  <section id="resume" class="resume section">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title">
+        <h2>Özgeçmiş</h2>
+        <p>Deneyim, eğitim ve sertifikalar</p>
+      </div>
+      <div class="row gy-4">
+        <div class="col-lg-4">
+          <div class="resume-side" data-aos="fade-right">
+            {% if ozgecmis.profil_fotografi %}
+            <div class="profile-img mb-3">
+              <img src="{{ ozgecmis.profil_fotografi.url }}" alt="Özgeçmiş" class="img-fluid rounded">
+            </div>
+            {% endif %}
+            <h3>Profesyonel Özet</h3>
+            <p>{{ ozgecmis.profesyonel_ozet|linebreaksbr }}</p>
+            {% if ozgecmis.iletisim_ozeti %}
+            <h3 class="mt-4">İletişim</h3>
+            <p>{{ ozgecmis.iletisim_ozeti|linebreaksbr }}</p>
+            {% elif hakkimda %}
+            <h3 class="mt-4">İletişim</h3>
+            <ul class="list-unstyled">
+              <li><i class="bi bi-envelope me-2"></i>{{ hakkimda.eposta }}</li>
+              <li><i class="bi bi-telephone me-2"></i>{{ hakkimda.telefon }}</li>
+            </ul>
+            {% endif %}
+            {% if ozgecmis.teknik_beceriler %}
+            <h3 class="mt-4">Teknik Beceriler</h3>
+            <ul>
+              {% for satir in ozgecmis.teknik_beceriler.splitlines %}
+              {% if satir.strip %}<li>{{ satir }}</li>{% endif %}
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-lg-8">
+          {% if ozgecmis.deneyimler.all %}
+          <div class="resume-section" data-aos="fade-left">
+            <h3><i class="bi bi-briefcase"></i> Deneyimler</h3>
+            {% for deneyim in ozgecmis.deneyimler.all %}
+            <div class="resume-item">
+              <h4>{{ deneyim.pozisyon }}</h4>
+              <h5>{{ deneyim.baslangic_tarihi }}{% if deneyim.bitis_tarihi %} — {{ deneyim.bitis_tarihi }}{% endif %}</h5>
+              <p class="company"><i class="bi bi-building"></i> {{ deneyim.kurum_adi }}</p>
+              {% if deneyim.aciklama %}<p>{{ deneyim.aciklama|linebreaksbr }}</p>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% if ozgecmis.egitimler.all %}
+          <div class="resume-section" data-aos="fade-left" data-aos-delay="100">
+            <h3><i class="bi bi-mortarboard"></i> Eğitimler</h3>
+            {% for egitim in ozgecmis.egitimler.all %}
+            <div class="resume-item">
+              <h4>{{ egitim.bolum }}</h4>
+              <h5>{{ egitim.baslangic_tarihi }}{% if egitim.bitis_tarihi %} — {{ egitim.bitis_tarihi }}{% endif %}</h5>
+              <p class="company"><i class="bi bi-building"></i> {{ egitim.okul_adi }}</p>
+              {% if egitim.aciklama %}<p>{{ egitim.aciklama|linebreaksbr }}</p>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% if ozgecmis.sertifikalar.all %}
+          <div class="resume-section" data-aos="fade-left" data-aos-delay="200">
+            <h3><i class="bi bi-award"></i> Sertifikalar</h3>
+            {% for sertifika in ozgecmis.sertifikalar.all %}
+            <div class="resume-item">
+              <h4>{{ sertifika.sertifika_adi }}</h4>
+              {% if sertifika.tarih %}<h5>{{ sertifika.tarih }}</h5>{% endif %}
+              {% if sertifika.veren_kurum %}<p class="company">{{ sertifika.veren_kurum }}</p>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {# ——— 6. PORTFÖY — admin: PortfolyoProjesi ——— #}
+  {% if projeler %}
+  <section id="portfolio" class="portfolio section light-background">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Portföy</h2>
+      <p>Projelerim</p>
+    </div>
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="filters-wrapper mb-4">
+        <ul class="portfolio-filters isotope-filters">
+          <li data-filter="*" class="filter-active">Tümü</li>
+          {% for kategori in portfolyo_kategorileri %}
+          <li data-filter=".filter-{{ kategori|slugify }}">{{ kategori }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="isotope-layout" data-layout="masonry" data-default-filter="*">
+        <div class="row gy-4 isotope-container">
+          {% for proje in projeler %}
+          <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-{{ proje.kategori|slugify }}">
+            <div class="portfolio-wrap">
+              {% if proje.gorsel %}
+              <img src="{{ proje.gorsel.url }}" class="img-fluid" alt="{{ proje.proje_adi }}">
+              {% else %}
+              <div class="portfolio-placeholder d-flex align-items-center justify-content-center" style="min-height:240px;background:var(--surface-color);">
+                <span class="display-6">{{ proje.proje_adi|slice:":1" }}</span>
+              </div>
+              {% endif %}
+              <div class="portfolio-info">
+                <div class="content">
+                  <span class="category">{{ proje.kategori }}</span>
+                  <h4>{{ proje.proje_adi }}</h4>
+                  {% if proje.aciklama %}<p class="small">{{ proje.aciklama|truncatewords:12 }}</p>{% endif %}
+                  <div class="portfolio-links">
+                    {% if proje.gorsel %}
+                    <a href="{{ proje.gorsel.url }}" class="glightbox" title="{{ proje.proje_adi }}"><i class="bi bi-zoom-in"></i></a>
+                    {% endif %}
+                    {% if proje.proje_linki %}
+                    <a href="{{ proje.proje_linki }}" target="_blank" rel="noopener"><i class="bi bi-link-45deg"></i></a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {# ——— 7. HİZMETLER — admin: Hizmet ——— #}
+  {% if hizmetler %}
+  <section id="services" class="services section">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Hizmetler</h2>
+      <p>Sunduğum hizmetler</p>
+    </div>
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row gy-4">
+        {% for hizmet in hizmetler %}
+        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+          <div class="service-card h-100">
+            <div class="service-icon"><i class="{{ hizmet.ikon }}"></i></div>
+            <h3>{{ hizmet.baslik }}</h3>
+            <p>{{ hizmet.aciklama|linebreaksbr }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  {# ——— 8. YORUMLAR — admin: Yorum + form ——— #}
+  <section id="testimonials" class="testimonials section light-background">
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Yorumlar</h2>
+      <p>Ziyaretçi görüşleri</p>
+    </div>
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      {% if yorumlar %}
+      <div class="swiper init-swiper mb-5" data-aos="fade-up">
+        <script type="application/json" class="swiper-config">
+          {
+            "loop": true,
+            "speed": 600,
+            "autoplay": { "delay": 5000 },
+            "slidesPerView": 1,
+            "spaceBetween": 24,
+            "pagination": { "el": ".swiper-pagination", "clickable": true },
+            "breakpoints": {
+              "768": { "slidesPerView": 2 },
+              "1200": { "slidesPerView": 3 }
+            }
+          }
+        </script>
+        <div class="swiper-wrapper">
+          {% for yorum in yorumlar %}
+          <div class="swiper-slide">
+            <div class="testimonial-item h-100">
+              <div class="testimonial-content">
+                <div class="quote-pattern"><i class="bi bi-quote"></i></div>
+                <p>{{ yorum.yorum_metni }}</p>
+                <div class="client-info">
+                  <div class="client-details">
+                    <h3>{{ yorum.yorumcu_adi }}</h3>
+                    {% if yorum.yorumcu_unvan %}<span class="position">{{ yorum.yorumcu_unvan }}</span>{% endif %}
+                    <small class="d-block mt-1 opacity-75">{{ yorum.yorum_tarihi|date:"d F Y" }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="swiper-pagination mt-4"></div>
+      </div>
+      {% endif %}
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="contact-form p-4 rounded">
+            <h3 class="mb-3">Yorum Bırakın</h3>
+            <form method="post" action="{% url 'index' %}#testimonials">
+              {% csrf_token %}
+              <input type="hidden" name="form_tipi" value="yorum">
+              <div class="row gy-3">
+                <div class="col-md-6">{{ yorum_form.yorumcu_adi.label_tag }}{{ yorum_form.yorumcu_adi }}</div>
+                <div class="col-md-6">{{ yorum_form.yorumcu_unvan.label_tag }}{{ yorum_form.yorumcu_unvan }}</div>
+                <div class="col-12">{{ yorum_form.yorum_metni.label_tag }}{{ yorum_form.yorum_metni }}</div>
+                <div class="col-12 text-center">
+                  <button type="submit" class="btn btn-primary px-4">Yorumu Gönder</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# ——— 9. İLETİŞİM — admin: IletisimBilgisi + mesaj formu ——— #}
+  {% include 'includes/contact_section.html' %}
+
+</main>
+{% endblock %}

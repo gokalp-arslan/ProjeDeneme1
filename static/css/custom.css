@@ -1,8 +1,28 @@
 /* Tek sayfa portföy — admin verisi entegrasyonu */
 
+/* SnapFolio: sidebar varken içerik her zaman kaydırılsın (mesaj kutusu araya girse bile) */
+@media (min-width: 1200px) {
+  body.index-page .main,
+  body.index-page #footer {
+    margin-left: 330px;
+  }
+}
+
+@media (max-width: 1199px) {
+  body.index-page .main,
+  body.index-page #footer {
+    margin-left: 0;
+    padding-top: 60px;
+  }
+}
+
 .section {
   scroll-margin-top: 24px;
   overflow: clip;
+}
+
+#preloader {
+  display: none !important;
 }
 
 .profile-placeholder {

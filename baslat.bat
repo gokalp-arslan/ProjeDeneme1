@@ -24,13 +24,11 @@ if errorlevel 1 (
 
 echo [2/2] Sunucu baslatiliyor...
 echo.
-echo   Ana sayfa : http://127.0.0.1:8000/
-echo   Admin     : http://127.0.0.1:8000/admin/
-echo   Iletisim  : http://127.0.0.1:8000/contact/
+echo   ANA SAYFA (Hero) : http://127.0.0.1:8000/#hero
+echo   Tam sayfa        : http://127.0.0.1:8000/
+echo   Admin            : http://127.0.0.1:8000/admin/
 echo.
-echo   localhost:8000 acilmiyorsa (normal):
-echo   - http://127.0.0.1:8000/ kullanin VEYA
-echo   - localhost_duzelt.bat dosyasini YONETICI olarak calistirin
+echo   localhost:8000 calismiyorsa -> 127.0.0.1 kullanin
 echo.
 echo Durdurmak icin bu pencerede Ctrl+C
 echo.

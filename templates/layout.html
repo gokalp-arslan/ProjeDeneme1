@@ -38,17 +38,6 @@
 
   <a href="#" id="scroll-top" class="scroll-top d-flex align-serif-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <div id="preloader"></div>
-  <script>
-    /* JS yüklenmese bile preloader takılmasın */
-    function hidePreloader() {
-      var el = document.getElementById('preloader');
-      if (el) el.remove();
-    }
-    window.addEventListener('load', hidePreloader);
-    setTimeout(hidePreloader, 2500);
-  </script>
-
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/aos/aos.js' %}"></script>
   <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
